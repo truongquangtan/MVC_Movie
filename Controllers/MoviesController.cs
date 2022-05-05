@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MvcMovie.Models;
+using MvcMovie.Supporters;
 
 namespace MvcMovie.Controllers
 {
@@ -20,11 +21,43 @@ namespace MvcMovie.Controllers
         }
 
         // GET: Movies
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string movieGenre, string searchString)
         {
-            return View(await _context.Movie.ToListAsync());
-        }
+            Movies filteredMovies = await GetMoviesFromContextAsync();
+            filteredMovies = FilterMoviesByTitle(filteredMovies, searchString);
+            filteredMovies = FilterMoviesByGenre(filteredMovies, movieGenre);
 
+            var genreQuery = (await GetMoviesFromContextAsync()).GetAllGenres();
+            var movieGenreViewModel = new MovieGenreViewModel
+            {
+                Genres = new SelectList(genreQuery),
+                Movies = filteredMovies.GetAllMovies(),
+                SearchString = searchString,
+                MovieGenre = movieGenre
+            };
+
+            return View(movieGenreViewModel);
+        }
+        private async Task<Movies> GetMoviesFromContextAsync()
+        {
+            return new Movies(await _context.Movie.ToListAsync());
+        }
+        private Movies FilterMoviesByTitle(Movies movies, string titleFiltered)
+        {
+            if(!string.IsNullOrEmpty(titleFiltered))
+            {
+                movies = movies.GetAllMoviesWhereTitleContain(titleFiltered).ToMovies();
+            }
+            return movies;
+        }
+        private Movies FilterMoviesByGenre(Movies movies, string genreFiltered)
+        {
+            if(!string.IsNullOrEmpty(genreFiltered))
+            {
+                movies = movies.GetAllMoviesWhereGenreEquals(genreFiltered).ToMovies();
+            }
+            return movies;
+        }
         // GET: Movies/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -54,7 +87,7 @@ namespace MvcMovie.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,ReleaseDate,Genre,Price")] Movie movie)
+        public async Task<IActionResult> Create([Bind("Id,Title,ReleaseDate,Genre,Price,Rating")] Movie movie)
         {
             if (ModelState.IsValid)
             {
@@ -86,7 +119,7 @@ namespace MvcMovie.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,ReleaseDate,Genre,Price")] Movie movie)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,ReleaseDate,Genre,Price,Rating")] Movie movie)
         {
             if (id != movie.Id)
             {
