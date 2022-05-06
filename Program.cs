@@ -10,8 +10,10 @@ if(builder.Environment.IsDevelopment())
 }
 else
 {
+    // builder.Services.AddDbContext<MvcMovieContext>(options =>
+    // options.UseSqlServer(builder.Configuration.GetConnectionString("MvcMovieContextProduction") ?? throw new InvalidOperationException("Connection string 'MvcMovieContextProduction' is null.")));
     builder.Services.AddDbContext<MvcMovieContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("MvcMovieContextProduction") ?? throw new InvalidOperationException("Connection string 'MvcMovieContextProduction' is null.")));
+    options.UseSqlite(builder.Configuration.GetConnectionString("MvcMovieContext") ?? throw new InvalidOperationException("Connection string 'MvcMovieContext' not found.")));
 }
 
 // Add services to the container.
@@ -27,10 +29,6 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-app.UseForwardedHeaders( new ForwardedHeadersOptions
-{
-    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
-});
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 

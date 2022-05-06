@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "G:\\My Web App\\Learning\\MvcMovie\\MvcMovie.csproj": {}
+    "G:\\My Web App\\Learning\\MVC_Movie\\MvcMovie.csproj": {}
   },
   "projects": {
-    "G:\\My Web App\\Learning\\MvcMovie\\MvcMovie.csproj": {
+    "G:\\My Web App\\Learning\\MVC_Movie\\MvcMovie.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "G:\\My Web App\\Learning\\MvcMovie\\MvcMovie.csproj",
+        "projectUniqueName": "G:\\My Web App\\Learning\\MVC_Movie\\MvcMovie.csproj",
         "projectName": "MvcMovie",
-        "projectPath": "G:\\My Web App\\Learning\\MvcMovie\\MvcMovie.csproj",
+        "projectPath": "G:\\My Web App\\Learning\\MVC_Movie\\MvcMovie.csproj",
         "packagesPath": "C:\\Users\\PC\\.nuget\\packages\\",
-        "outputPath": "G:\\My Web App\\Learning\\MvcMovie\\obj\\",
+        "outputPath": "G:\\My Web App\\Learning\\MVC_Movie\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\PC\\AppData\\Roaming\\NuGet\\NuGet.Config",
